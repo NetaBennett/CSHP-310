@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+//***********************************
+// Student: Bennett, Neta (netab)
+//***********************************
+
 namespace VendingMachine.Models
 {
     public class DenominationBag

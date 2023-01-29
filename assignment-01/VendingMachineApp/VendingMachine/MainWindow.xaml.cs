@@ -15,7 +15,9 @@ using System.Windows.Shapes;
 
 using VendingMachine.Models;
 
-// Bennett, Neta (netab)
+//***********************************
+// Student: Bennett, Neta (netab)
+//***********************************
 
 namespace VendingMachine
 {
@@ -34,15 +36,8 @@ namespace VendingMachine
 
         private void InitializeForm()
         {
-            //initialize prices on labels
-            var priceCC = GetProductPrice(ProductEnum.CocaCola);
-            this.labelCocaColaPrice.Content = $"$ {priceCC}";
-
-            var priceSp = GetProductPrice(ProductEnum.Sprite);
-            this.labelSpritPrice.Content = $"$ {priceSp}";
-
-            var priceMd = GetProductPrice(ProductEnum.MountainDew);
-            this.labelMountainDewPrice.Content = $"$ {priceMd}";
+            UpdateProductPricing();
+            UpdateInventoryLevels();
         }
         private decimal GetProductPrice(ProductEnum productEnum) => 
             _vm.GetProductInventory(productEnum)?.Product.Price ?? 0m;
@@ -57,6 +52,24 @@ namespace VendingMachine
         private void buttonQuarter_Click(object sender, RoutedEventArgs e) => InsertMoney(DenominationFactory.Quarter);
         private void buttonHalfDollar_Click(object sender, RoutedEventArgs e) => InsertMoney(DenominationFactory.HalfDollar);
         private void UpdateTotalPaid() => labelPaymentTotal.Content = $"$ {_vm.GetTotalPaid()}";
+        private void UpdateInventoryLevels()
+        {
+            labelCocaColaInventory.Content = $"({GetProductIventory(ProductEnum.CocaCola)})";
+            labelSpriteInventory.Content = $"({GetProductIventory(ProductEnum.Sprite)})";
+            labelMountainDewInventory.Content = $"({GetProductIventory(ProductEnum.MountainDew)})";
+        }
+
+        private void UpdateProductPricing()
+        {
+            var priceCC = GetProductPrice(ProductEnum.CocaCola);
+            this.labelCocaColaPrice.Content = $"$ {priceCC}";
+
+            var priceSp = GetProductPrice(ProductEnum.Sprite);
+            this.labelSpritPrice.Content = $"$ {priceSp}";
+
+            var priceMd = GetProductPrice(ProductEnum.MountainDew);
+            this.labelMountainDewPrice.Content = $"$ {priceMd}";
+        }
         private void InsertMoney(Denomination denomination)
         {
             _vm.InsertDenomination(denomination);
@@ -71,7 +84,7 @@ namespace VendingMachine
                 {
                     var result = _vm.DispenseProduct(product);
                     UpdateTotalPaid();
-                   // UpdateInventoryLevels();
+                    UpdateInventoryLevels();
                     MessageBox.Show(FormatResultDisplay(result), "Purchase Complete");
                 }
                 catch(InvalidOperationException opEx)
@@ -87,11 +100,6 @@ namespace VendingMachine
             {
                 MessageBox.Show("Insufficient funds for product. Add more funds.", "Sorry");
             }
-        }
-
-        private void UpdateInventoryLevels()
-        {
-            throw new NotImplementedException();
         }
 
         private string FormatResultDisplay(PurchaseResult result)

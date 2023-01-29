@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+
+//***********************************
+// Student: Bennett, Neta (netab)
+//***********************************
 
 namespace VendingMachine.Models
 {
@@ -44,10 +47,9 @@ namespace VendingMachine.Models
         {
             return _coinBag.BagTotal;
         }
-
-        public Inventory? GetProductInventory(ProductEnum productType)
+        public Inventory GetProductInventory(ProductEnum productType)
         {
-            return this._productInventory.FirstOrDefault(t => t.Product.ProductCode == productType);
+            return this._productInventory.First(t => t.Product.ProductCode == productType);
         }
         public PurchaseResult DispenseProduct(Product product)
         {
