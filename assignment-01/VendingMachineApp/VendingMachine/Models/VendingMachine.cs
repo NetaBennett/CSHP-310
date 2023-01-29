@@ -14,12 +14,11 @@ namespace VendingMachine.Models
         private List<Inventory> _productInventory = new List<Inventory>();
         private DenominationBag _coinBag = new DenominationBag();
         private static VendingMachine _instance = null;
-     
+
         //private constructor so we can make it a singleton
         private VendingMachine()
         {
         }
-        //singleton get instance
         public static VendingMachine GetInstance()
         {
             if (_instance == null)
@@ -29,7 +28,29 @@ namespace VendingMachine.Models
             return _instance;
         }
 
-        //Public Interface Methods
+        //Public Methods
+        public PurchaseResult DispenseProduct(Product product)
+        {
+            var inventory = _productInventory.FirstOrDefault(t => t.Product.Name == product.Name);
+
+            if (inventory == null || inventory.NumUnits == 0)
+            {
+                throw new InvalidOperationException($"Sorry, we're all out of {product.Name}. Please make another selection.");
+            }
+
+            if (!HasSufficientFunds(product.Price))
+            {
+                throw new InvalidOperationException($"Insufficient funds for {product.Name}. Please add more money.");
+            }
+
+            //decrement inventory
+            inventory.NumUnits--;
+            //calculate change
+            DenominationBag returnChange = Calculator.CalculateChange(product.Price, _coinBag.BagTotal);
+            this._coinBag.Coins.Clear();
+            return new PurchaseResult() { PurchasedProduct = product, ReturnChange = returnChange };
+        }
+
         public void AddProductInventory(Inventory inventory)
         {
             _productInventory.Add(inventory);
@@ -39,9 +60,9 @@ namespace VendingMachine.Models
             _coinBag.Coins.Add(denomination);
             return _coinBag.BagTotal;
         }
-        public bool HasSufficientFunds(Product product)
+        public bool HasSufficientFunds(decimal productPrice)
         {
-            return (_coinBag.BagTotal >= product.Price);
+            return (_coinBag.BagTotal >= productPrice);
         }   
         public decimal GetTotalPaid()
         {
@@ -51,27 +72,7 @@ namespace VendingMachine.Models
         {
             return this._productInventory.First(t => t.Product.ProductCode == productType);
         }
-        public PurchaseResult DispenseProduct(Product product)
-        {
-            var inventory = _productInventory.FirstOrDefault(t => t.Product.Name == product.Name);
-
-            if (inventory == null || inventory.NumUnits == 0)
-            {
-                throw new InvalidOperationException($"Sorry, we're all out of {product.Name}. Please make another selection.");
-            }
-           
-            if (!HasSufficientFunds(product))
-            {
-                throw new InvalidOperationException("Insufficient funds for product. Please add more money.");
-            }
-
-            //decrement inventory available
-            inventory.NumUnits--;
-            DenominationBag returnChange = Calculator.CalculateChange(product.Price, _coinBag.BagTotal);
-            this._coinBag.Coins.Clear();
-            return new PurchaseResult() { PurchasedProduct = product, ReturnChange = returnChange };
-        }
-        private static VendingMachine Initialize()
+         private static VendingMachine Initialize()
         {
             //setup of the machine's initial inventory
             _instance = new VendingMachine();

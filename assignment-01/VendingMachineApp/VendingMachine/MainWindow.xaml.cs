@@ -78,7 +78,7 @@ namespace VendingMachine
 
         private void DispenseProduct(Product product)
         {
-            if (_vm.HasSufficientFunds(product))
+            if (_vm.HasSufficientFunds(product.Price))
             {
                 try
                 {
@@ -98,7 +98,7 @@ namespace VendingMachine
             }
             else
             {
-                MessageBox.Show("Insufficient funds for product. Add more funds.", "Sorry");
+                MessageBox.Show($"Insufficient funds for {product.Name}. Add more funds.", "Sorry");
             }
         }
 
