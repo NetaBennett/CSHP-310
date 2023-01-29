@@ -1,4 +1,8 @@
-﻿namespace VendingMachine.Models
+﻿//***********************************
+// Student: Bennett, Neta (netab)
+//***********************************
+
+namespace VendingMachine.Models
 {
     public class PurchaseResult
     {

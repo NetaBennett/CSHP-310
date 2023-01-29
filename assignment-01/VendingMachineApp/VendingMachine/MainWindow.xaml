@@ -8,6 +8,10 @@
         Title="Super Sodas R Us" Height="600" Width="700"
         WindowStartupLocation="CenterScreen">
     <Grid>
+        <!--//***********************************
+        // Student: Bennett, Neta (netab)
+        //***********************************-->
+
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -36,6 +40,7 @@
         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2" >
             <Label x:Name="labelCocaColaPrice" Content="Price: xxx" FontSize="20" HorizontalAlignment="Center"/>
             <Button x:Name="buttonCocaCola" Width="100" Padding="5" Click="buttonCocaCola_Click">Select</Button>
+            <Label x:Name="labelCocaColaInventory" Content="(0)" FontSize="14" HorizontalAlignment="Center"/>
         </StackPanel>
 
         <!-- Sprite -->
@@ -44,6 +49,7 @@
         <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1" >
             <Label x:Name="labelSpritPrice" Content="Price: xxx" FontSize="20" HorizontalAlignment="Center"/>
             <Button x:Name="buttonSprite" Width="100" Padding="5" Click="buttonSprite_Click">Select</Button>
+            <Label x:Name="labelSpriteInventory" Content="(0)" FontSize="14" HorizontalAlignment="Center"/>
         </StackPanel>
 
         <!-- Mountain Dew -->
@@ -52,9 +58,10 @@
         <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="2" >
             <Label x:Name="labelMountainDewPrice" Content="Price: xxx" FontSize="20" HorizontalAlignment="Center"/>
             <Button x:Name="buttonMountainDew" Width="100" Padding="5" Click="buttonMountainDew_Click">Select</Button>
+            <Label x:Name="labelMountainDewInventory" Content="(0)" FontSize="14" HorizontalAlignment="Center"/>
         </StackPanel>
 
-        <!-- Rows for Price Labels and Select Buttons  -->
+        <!-- Rows for Payment Labels -->
         <Label Grid.Row="3" Grid.Column="0" Margin="10 30 10 10"
                 Content="Choose Payment" FontSize="20" HorizontalAlignment="Left"/>
         <Label Grid.Row="3" Grid.Column="2"  Margin="10 30 10 10"
@@ -72,8 +79,7 @@
 
         <!-- Label to Display Total Payment Entered -->
         <StackPanel Grid.Row="4" Grid.Column="2" Orientation="Vertical">
-            <!--<Label Content="Payment Total" Margin="10" FontSize="20" HorizontalAlignment="Left"/>-->
-            <Label x:Name="labelPaymentTotal"  Content="" Margin="15 15 5 5" FontSize="15" HorizontalAlignment="Left"/>
+            <Label x:Name="labelPaymentTotal"  Content="" Margin="5 0 0 0" FontSize="15" HorizontalAlignment="Left"/>
         </StackPanel>
     </Grid>
 </Window>

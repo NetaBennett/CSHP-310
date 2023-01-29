@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//***********************************
+// Student: Bennett, Neta (netab)
+//***********************************
+
 namespace VendingMachine.Models
 {
     public class Denomination
