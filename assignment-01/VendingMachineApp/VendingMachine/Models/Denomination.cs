@@ -1,7 +1,12 @@
 ﻿using System;
+
+
 //***********************************
+// CSHP-310
+// Assignment: 01
 // Student: Bennett, Neta (netab)
 //***********************************
+
 
 namespace VendingMachine.Models
 {
