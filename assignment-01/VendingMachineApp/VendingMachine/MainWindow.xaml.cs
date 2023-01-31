@@ -6,6 +6,8 @@ using System.Windows.Controls;
 using VendingMachine.Models;
 
 //***********************************
+// CSHP-310
+// Assignment: 01
 // Student: Bennett, Neta (netab)
 //***********************************
 
