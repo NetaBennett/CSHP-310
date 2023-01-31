@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-
 //***********************************
 // Student: Bennett, Neta (netab)
 //***********************************
@@ -72,13 +71,22 @@ namespace VendingMachine.Models
         {
             return this._productInventory.First(t => t.Product.ProductCode == productType);
         }
+
+        public DenominationBag ReturnMoneyWithoutSelection()
+        {
+            var returnedChange = _coinBag.Clone();
+            _coinBag.Coins.Clear();
+            return returnedChange;
+        }
+
+        //private helper methods
          private static VendingMachine Initialize()
         {
             //setup of the machine's initial inventory
             _instance = new VendingMachine();
-            _instance.AddProductInventory(new Inventory(ProductFactory.CocaCola, 3));
-            _instance.AddProductInventory(new Inventory(ProductFactory.Sprite, 3));
-            _instance.AddProductInventory(new Inventory(ProductFactory.MountainDew, 3));
+            _instance.AddProductInventory(new Inventory(ProductFactory.GetProduct(ProductEnum.CocaCola), 3));
+            _instance.AddProductInventory(new Inventory(ProductFactory.GetProduct(ProductEnum.Sprite), 3));
+            _instance.AddProductInventory(new Inventory(ProductFactory.GetProduct(ProductEnum.MountainDew), 3));
             return _instance;
         }
     }

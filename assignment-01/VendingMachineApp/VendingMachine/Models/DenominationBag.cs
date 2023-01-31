@@ -17,5 +17,12 @@ namespace VendingMachine.Models
                 return Coins.Sum(t => t.Value);
             }
         }
+
+        public DenominationBag Clone()
+        {
+            var db = new DenominationBag();
+            this.Coins.ForEach(c => db.Coins.Add(c));
+            return db;
+        }
     }
 }

@@ -25,6 +25,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <!-- Row for Welcome Banner -->
@@ -39,7 +40,7 @@
             Width="220" Height="220" Source="\Images\coca-cola.jpg"/>
         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2" >
             <Label x:Name="labelCocaColaPrice" Content="Price: xxx" FontSize="20" HorizontalAlignment="Center"/>
-            <Button x:Name="buttonCocaCola" Width="100" Padding="5" Click="buttonCocaCola_Click">Select</Button>
+            <Button x:Name="buttonCocaCola" Tag="CocaCola" Width="100" Padding="5" Click="buttonSelection_Click">Select</Button>
             <Label x:Name="labelCocaColaInventory" Content="(0)" FontSize="14" HorizontalAlignment="Center"/>
         </StackPanel>
 
@@ -48,7 +49,7 @@
                 Width="170" Height="200" Source="\Images\sprite.jpeg"/>
         <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1" >
             <Label x:Name="labelSpritPrice" Content="Price: xxx" FontSize="20" HorizontalAlignment="Center"/>
-            <Button x:Name="buttonSprite" Width="100" Padding="5" Click="buttonSprite_Click">Select</Button>
+            <Button x:Name="buttonSprite" Tag="Sprite" Width="100" Padding="5" Click="buttonSelection_Click">Select</Button>
             <Label x:Name="labelSpriteInventory" Content="(0)" FontSize="14" HorizontalAlignment="Center"/>
         </StackPanel>
 
@@ -57,7 +58,7 @@
                 Width="170" Height="200" Source="\Images\mountain-dew.jpg"/>
         <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="2" >
             <Label x:Name="labelMountainDewPrice" Content="Price: xxx" FontSize="20" HorizontalAlignment="Center"/>
-            <Button x:Name="buttonMountainDew" Width="100" Padding="5" Click="buttonMountainDew_Click">Select</Button>
+            <Button x:Name="buttonMountainDew" Tag="MountainDew" Width="100" Padding="5" Click="buttonSelection_Click">Select</Button>
             <Label x:Name="labelMountainDewInventory" Content="(0)" FontSize="14" HorizontalAlignment="Center"/>
         </StackPanel>
 
@@ -71,15 +72,18 @@
         <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" 
                     Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left"
                     Margin="0 0 0 0">
-            <Button x:Name="buttonNickel" Content="Add Nickel" Width="100" Margin="5" Padding="5" Click="buttonNickel_Click" />
-            <Button x:Name="buttonDime" Content="Add Dime" Width="100" Margin="5"  Padding="5" Click="buttonDime_Click" />
-            <Button x:Name="buttonQuarter" Content="Add Quarter" Width="100" Margin="5"  Padding="5" Click="buttonQuarter_Click" />
-            <Button x:Name="buttonHalfDollar" Content="Add Half-Dollar" Width="100" Margin="5"  Padding="5" Click="buttonHalfDollar_Click" />
+            <Button x:Name="buttonNickel" Tag="Nickel"  Content="Add Nickel" Width="100" Margin="5" Padding="5" Click="buttonMoney_Click" />
+            <Button x:Name="buttonDime" Tag="Dime" Content="Add Dime" Width="100" Margin="5"  Padding="5" Click="buttonMoney_Click" />
+            <Button x:Name="buttonQuarter" Tag="Quarter"  Content="Add Quarter" Width="100" Margin="5"  Padding="5" Click="buttonMoney_Click" />
+            <Button x:Name="buttonHalfDollar" Tag="HalfDollar" Content="Add Half-Dollar" Width="100" Margin="5"  Padding="5" Click="buttonMoney_Click" />
         </StackPanel>
 
         <!-- Label to Display Total Payment Entered -->
         <StackPanel Grid.Row="4" Grid.Column="2" Orientation="Vertical">
-            <Label x:Name="labelPaymentTotal"  Content="" Margin="5 0 0 0" FontSize="15" HorizontalAlignment="Left"/>
+            <Label x:Name="labelPaymentTotal"  Content="" Margin="5 0 0 0" FontSize="15" HorizontalAlignment="Left"/>         
         </StackPanel>
+
+        <Button Grid.Row="5" Grid.Column="2" x:Name="buttonReturnChange" 
+                Content="Return Change" Width="100" Margin="5"  Padding="5" HorizontalAlignment="Left" Click="buttonReturnChange_Click"/>
     </Grid>
 </Window>
