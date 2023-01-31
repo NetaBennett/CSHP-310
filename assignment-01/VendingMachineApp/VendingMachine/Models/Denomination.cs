@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 //***********************************
 // Student: Bennett, Neta (netab)
 //***********************************
@@ -19,7 +14,6 @@ namespace VendingMachine.Models
         }
         public string Name { get; }
         public decimal Value { get; }
-
         public override string ToString()
         {
             return $"{Name} - ${Value}";
@@ -35,18 +29,9 @@ namespace VendingMachine.Models
         HalfDollar
     }
 
-
     public static class DenominationFactory
     {
-        //these static properties are not generally a good practice but i'm using them
-        //for ease of development
-        public static Denomination HalfDollar { get { return CreateDenomination(DenominationEnum.HalfDollar); } }
-        public static Denomination Quarter { get { return CreateDenomination(DenominationEnum.Quarter); } }
-        public static Denomination Dime { get { return CreateDenomination(DenominationEnum.Dime); } }
-        public static Denomination Nickel { get { return CreateDenomination(DenominationEnum.Nickel); } }
-
-
-        private static Denomination CreateDenomination(DenominationEnum type)
+        public static Denomination GetDenomination(DenominationEnum type)
         {
             switch(type)
             {

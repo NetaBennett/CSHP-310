@@ -6,8 +6,6 @@
 
 namespace VendingMachine.Models
 {
-
- 
     public class Product
     {
         public Product(string productName, decimal productPrice, ProductEnum enumType)
@@ -25,7 +23,6 @@ namespace VendingMachine.Models
             return $"{Name} - {Price}";
         }
     }
-
     public enum ProductEnum
     {
         CocaCola,
@@ -34,13 +31,7 @@ namespace VendingMachine.Models
     }
     public static class ProductFactory
     { 
-        //these static properties are not generally a good practice but i'm using them
-        //for ease of development
-        public static Product CocaCola { get { return CreateProduct(ProductEnum.CocaCola);  } }
-        public static Product Sprite { get { return CreateProduct(ProductEnum.Sprite); } }
-        public static Product MountainDew { get { return CreateProduct(ProductEnum.MountainDew); } }
-
-        private static Product CreateProduct(ProductEnum productType)
+        public static Product GetProduct(ProductEnum productType)
         {
             switch(productType)
             {

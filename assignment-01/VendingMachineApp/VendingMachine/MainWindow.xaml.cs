@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using VendingMachine.Models;
 
@@ -39,18 +29,50 @@ namespace VendingMachine
             UpdateProductPricing();
             UpdateInventoryLevels();
         }
-        private decimal GetProductPrice(ProductEnum productEnum) => 
-            _vm.GetProductInventory(productEnum)?.Product.Price ?? 0m;
 
-        private int GetProductIventory(ProductEnum productEnum) => 
-                _vm.GetProductInventory(productEnum)?.NumUnits ?? 0;
-        private void buttonCocaCola_Click(object sender, RoutedEventArgs e) => DispenseProduct(ProductFactory.CocaCola);
-        private void buttonSprite_Click(object sender, RoutedEventArgs e) => DispenseProduct(ProductFactory.Sprite);
-        private void buttonMountainDew_Click(object sender, RoutedEventArgs e) => DispenseProduct(ProductFactory.MountainDew);
-        private void buttonNickel_Click(object sender, RoutedEventArgs e) => InsertMoney(DenominationFactory.Nickel);
-        private void buttonDime_Click(object sender, RoutedEventArgs e) => InsertMoney(DenominationFactory.Dime);
-        private void buttonQuarter_Click(object sender, RoutedEventArgs e) => InsertMoney(DenominationFactory.Quarter);
-        private void buttonHalfDollar_Click(object sender, RoutedEventArgs e) => InsertMoney(DenominationFactory.HalfDollar);
+        //Event Handlers
+    
+        /// <summary>
+        /// Called when user (inserts) makes money selection.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonMoney_Click(object sender, RoutedEventArgs e)
+        {
+            string denominationTag = ((Button)sender).Tag?.ToString() ?? string.Empty;
+            DenominationEnum moneyValue = (DenominationEnum)Enum.Parse(typeof(DenominationEnum), denominationTag);
+            InsertMoney(moneyValue);
+        }
+
+        /// <summary>
+        /// Called when user has made a product selection.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonSelection_Click(object sender, RoutedEventArgs e)
+        {
+            string selectionTag = ((Button)sender).Tag?.ToString() ?? string.Empty;
+            ProductEnum selectionProduct = (ProductEnum)Enum.Parse(typeof(ProductEnum), selectionTag);
+            DispenseProduct(selectionProduct);
+        }
+     
+        /// <summary>
+        /// Called when user decides to not make a product selection and opts instead to get 
+        /// their money back, if any has been submitted.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonReturnChange_Click(object sender, RoutedEventArgs e)
+        {
+            var returnedChange = _vm.ReturnMoneyWithoutSelection();
+            var result = FormatReturnedChangeDisplay(returnedChange);
+            UpdateTotalPaid();
+            MessageBox.Show(result, "Thank You");
+        }
+
+        //Supporting Methods
+        private decimal GetProductPrice(ProductEnum productEnum) => _vm.GetProductInventory(productEnum)?.Product.Price ?? 0m;
+        private int GetProductIventory(ProductEnum productEnum) => _vm.GetProductInventory(productEnum)?.NumUnits ?? 0;       
         private void UpdateTotalPaid() => labelPaymentTotal.Content = $"$ {_vm.GetTotalPaid()}";
         private void UpdateInventoryLevels()
         {
@@ -58,7 +80,6 @@ namespace VendingMachine
             labelSpriteInventory.Content = $"({GetProductIventory(ProductEnum.Sprite)})";
             labelMountainDewInventory.Content = $"({GetProductIventory(ProductEnum.MountainDew)})";
         }
-
         private void UpdateProductPricing()
         {
             var priceCC = GetProductPrice(ProductEnum.CocaCola);
@@ -70,14 +91,15 @@ namespace VendingMachine
             var priceMd = GetProductPrice(ProductEnum.MountainDew);
             this.labelMountainDewPrice.Content = $"$ {priceMd}";
         }
-        private void InsertMoney(Denomination denomination)
+        private void InsertMoney(DenominationEnum denominationEnum)
         {
+            Denomination denomination = DenominationFactory.GetDenomination(denominationEnum);
             _vm.InsertDenomination(denomination);
             UpdateTotalPaid();
         }
-
-        private void DispenseProduct(Product product)
+        private void DispenseProduct(ProductEnum productEnum)
         {
+            Product product = _vm.GetProductInventory(productEnum).Product;
             if (_vm.HasSufficientFunds(product.Price))
             {
                 try
@@ -85,7 +107,7 @@ namespace VendingMachine
                     var result = _vm.DispenseProduct(product);
                     UpdateTotalPaid();
                     UpdateInventoryLevels();
-                    MessageBox.Show(FormatResultDisplay(result), "Purchase Complete");
+                    MessageBox.Show(FormatPurchaseResultDisplay(result), "Thank You");
                 }
                 catch(InvalidOperationException opEx)
                 {
@@ -101,18 +123,24 @@ namespace VendingMachine
                 MessageBox.Show($"Insufficient funds for {product.Name}. Add more funds.", "Sorry");
             }
         }
-
-        private string FormatResultDisplay(PurchaseResult result)
+        private string FormatPurchaseResultDisplay(PurchaseResult result)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append($"Enjoy your {result.PurchasedProduct.Name}!" + Environment.NewLine);
             sb.Append(Environment.NewLine);
             sb.Append("------------------------------" + Environment.NewLine);
             sb.Append(Environment.NewLine);
-            sb.Append($"Your change is: ${result.ReturnChange.BagTotal}" + Environment.NewLine);
-            result.ReturnChange.Coins.ForEach(coin => sb.Append($" > {coin.ToString()}" + Environment.NewLine));
-
+            sb.Append(FormatReturnedChangeDisplay(result.ReturnChange));
             return sb.ToString();
         }
+        private string FormatReturnedChangeDisplay(DenominationBag returnedChange)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"Your change is: ${returnedChange.BagTotal}" + Environment.NewLine + Environment.NewLine);
+            returnedChange.Coins.ForEach(coin => sb.Append($" > {coin.ToString()}" + Environment.NewLine));
+            return sb.ToString();
+        }
+
+
     }
 }
